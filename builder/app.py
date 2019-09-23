@@ -9,6 +9,9 @@ import os
 def get_config_for_build():
     conf = config.clone()
     conf.build_id = time.strftime(conf.build_id_format)
+    # get headers in flask
+    # see https://stackoverflow.com/a/29387151
+    conf.host = request.headers.get("Host", conf.host)
     return conf
 
 app = Flask(__name__, static_url_path="")
@@ -43,7 +46,7 @@ def dir_listing(req_path):
     # Joining the base and the requested path
     abs_path = os.path.abspath(
         os.path.join(config.results.target, req_path))
-    print(abs_path)
+    print(abs_path, req_path)
 
     # Return 404 if path doesn't exist
     if not os.path.exists(abs_path):
@@ -56,7 +59,7 @@ def dir_listing(req_path):
     # redirect to directory name
     # see https://stackoverflow.com/a/14343957
     if not req_path.endswith("/") and req_path:
-        return redirect(req_path + "/", code=302)
+        return redirect(req_path.rsplit("/", 1)[-1] + "/", code=302)
 
     # Show directory contents
     files = os.listdir(abs_path)
