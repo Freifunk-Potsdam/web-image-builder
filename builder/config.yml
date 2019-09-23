@@ -1,0 +1,36 @@
+# the prefix for the environment variables to configure the script
+# e.g. "cores" becomes "builder_cores" so that you can start it with
+#     $ export builder_cores=2
+env_prefix: builder_
+
+# the number of cores used to build the image
+cores: 2
+
+# if there should be a lot of output
+debug: true
+
+firmware:
+    # where should we clone the firmware to?
+    directory: "./firmware"
+    # default repository to clone
+    repository:
+        git_url: "https://github.com/freifunk-berlin/firmware.git"
+        branch: "daily/upstream-master"
+
+results:
+    # this is the path where the results of the build occur
+    source: "./firmware/firmwares"
+    # this is where they are copied to after a successful build
+    # it allows serving the packages and downloading
+    target: "./firmwares"
+
+# the format of the build id
+build_id_format: "%Y-%m-%d_%H-%M-%S"
+
+
+
+# something you do not need to configure
+# it is used internally
+build_id: "0000-00-00_00-00-00"
+build_status: "unkonwn"
+

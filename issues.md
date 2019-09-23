@@ -1,0 +1,11 @@
+- re-use existing repository?
+- dump tasks which are done onto file system
+- put debug and execution information into the log of the task
+- integrate build serving directory into built image
+  - integrate host name
+- use openwrt table of hardware
+  - https://openwrt.org/supported_devices
+  - make searchable
+  - create download config from router
+  - link homepage
+
