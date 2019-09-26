@@ -13,6 +13,7 @@
     <script type="text/javascript" src="js/form.js"></script>
     <script type="text/javascript" src="js/request.js"></script>
     <script type="text/javascript" src="js/cookie.js"></script>
+    <script type="text/javascript" src="js/api.js"></script>
   </head>
   <body>
     <div class="field-listing grid-whole equalize">
@@ -21,21 +22,23 @@
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         Repository:
-        <select id="repository" onchange="repositorySelectionChanged()">
+        <select id="repository" onchange="repositorySelectionChanged()" class="wide">
           <option value="freifunk-berlin/firmware" selected="true">freifunk-berlin/firmware</option>
         </select>
+        <input type="text" id="repositoryInput" class="wide"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         Version:
-        <select id="branch" onchange="branchSelectionChanged()">
+        <select id="branch" onchange="branchSelectionChanged()" class="wide">
           <option value="master" selected="true">master</option>
         </select>
+        <input type="text" id="branchInput" class="wide"/>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-whole padded-inner">
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         Router:
-        <select id="brandSelection" onchange="brandSelectionChanged()">
+        <select id="brandSelection" onchange="brandSelectionChanged()" class="wide">
         </select>
-        <select id="modelSelection" onchange="modelSelectionChanged()">
+        <select id="modelSelection" onchange="modelSelectionChanged()" class="wide">
         </select>
         <p>
           <span id="modelrammb"></span>
@@ -48,8 +51,17 @@
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <a href="https://openwrt.org/docs/techref/instructionset/">Ziel-Architektur</a>:
-        <input type="text" id="modelTarget" />
-        <input type="text" id="modelSubtarget" />
+        <input type="text" id="modelTarget" class="wide"/>
+        <input type="text" id="modelSubtarget" class="wide"/>
+        Du kannst in die Felder eigene Werte eintragen.
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        Wenn Du eine E-Mail bekommen magst, wenn der Build vorbei ist,
+        dann trage sie hier ein:
+        <input type="text" id="modelSubtarget" class="wide"/>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner centered">
+        <input type="button" onclick="startBuild()" value="Erstellen">
       </div>
     </div>
   </body>

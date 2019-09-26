@@ -6,11 +6,22 @@ var requestsSent = 0;
  */
 function trackRequest(url, onSuccess, onFailure, cache) {
   var key = "url-" + url;
-  var cachedValue = setCookie(key);
+  var cachedValue = getCookie(key);
+  var loaded = false;
   if (cachedValue) {
     console.log("loaded " + key);
-    onSuccess(JSON.parse(cachedValue));
-  } else {
+    var json = undefined;
+    try {
+      json = JSON.parse(cachedValue);
+    } catch(e) {
+      console.log("error: " + e);
+    }
+    if (json != undefined) {
+      onSuccess(json);
+      loaded = true;
+    }
+  } 
+  if (!loaded) {
     sendRequest(url, function(json) {
       setCookie(key, JSON.stringify(json));
       console.log("stored " + key);

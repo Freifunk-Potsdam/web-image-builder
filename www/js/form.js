@@ -130,10 +130,11 @@ function modelSelectionChanged() {
 
 function repositorySelectionChanged() {
   updateBranchSelection();
+  repositoryInput.value = "https://github.com/" + getSelectedRepository() + ".git";
 }
 
 function branchSelectionChanged() {
-  
+  branchInput.value = getSelectedBranch();
 }
 
 // update
@@ -167,11 +168,16 @@ function updateBranchSelection() {
   // https://developer.github.com/v3/repos/branches/#list-branches
   var branches = "https://api.github.com/repos/" + getSelectedRepository() + "/branches";
   var tags = "https://api.github.com/repos/" + getSelectedRepository() + "/tags";
+  var selectedBranch = getSelectedBranch();
   branch.innerHTML = "";
   function onSuccess(json) {
     json.forEach(function(branch_) {
       addOptionWithTextTo(branch_.name, branch);
     });
+    if (selectedBranch != getSelectedBranch()) {
+      branchSelectionChanged();
+      selectedBranch = getSelectedBranch();
+    }
   };
   function onError() {
     alert("Could not load branches of " + getSelectedRepository());
@@ -187,7 +193,11 @@ function getSelectedRepository() {
 }
 
 function getSelectedBranch() {
-  return branch.selectedOptions[0].value;
+  var selection = branch.selectedOptions;
+  if (selection.length == 0) {
+    return "master";
+  }
+  return selection[0].value;
 }
 
 
