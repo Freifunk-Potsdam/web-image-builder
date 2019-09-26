@@ -1,0 +1,35 @@
+
+h1 {
+  text-align: center;
+}
+
+.field {
+  background-color: white;
+  border-top-width: 0.5em;
+  border-radius: 0.3em;
+}
+
+body {
+  background-color: #555;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer a {
+  text-decoration: none;
+}
+
+.footer .link {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: rgba(255,255,255,0.8);
+}
+
+.bad-news {
+  background-color: red;
+  padding: 0.3em;
+  border-radius: 0.3em;
+}
+

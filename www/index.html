@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Custom image builder for the Freifunk Berlin firmware">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Freifunk-Berlin Firmware Erstellen</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/grid.css">
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <script type="text/javascript" src="js/routers.js"></script>
+    <script type="text/javascript" src="js/routerdb.js"></script>
+    <script type="text/javascript" src="js/form.js"></script>
+    <script type="text/javascript" src="js/request.js"></script>
+    <script type="text/javascript" src="js/cookie.js"></script>
+  </head>
+  <body>
+    <div class="field-listing grid-whole equalize">
+      <div class="field s-grid-whole m-grid-whole l-grid-whole padded">
+        <h1>Freifunk-Berlin Firmware Erstellen</h1>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        Repository:
+        <select id="repository" onchange="repositorySelectionChanged()">
+          <option value="freifunk-berlin/firmware" selected="true">freifunk-berlin/firmware</option>
+        </select>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        Version:
+        <select id="branch" onchange="branchSelectionChanged()">
+          <option value="master" selected="true">master</option>
+        </select>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-whole padded-inner">
+        Router:
+        <select id="brandSelection" onchange="brandSelectionChanged()">
+        </select>
+        <select id="modelSelection" onchange="modelSelectionChanged()">
+        </select>
+        <p>
+          <span id="modelrammb"></span>
+          <span id="modelflashmb"></span>
+          <span id="modelinfo"></span>
+        </p>
+        <p>
+          <a href="https://openwrt.org/">Durchsuche das Wiki, wenn Du den Router hier nicht findest.</a>
+        </p>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <a href="https://openwrt.org/docs/techref/instructionset/">Ziel-Architektur</a>:
+        <input type="text" id="modelTarget" />
+        <input type="text" id="modelSubtarget" />
+      </div>
+    </div>
+  </body>
+</html>
+

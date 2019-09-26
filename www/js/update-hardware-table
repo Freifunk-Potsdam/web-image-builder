@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+cd "`dirname \"$0\"`"
+
+js_file="./routers.js"
+file="/tmp/toh_dump_tab_separated_csv.zip"
+dir="$file.content"
+
+echo "retrieve the table of hardware"
+if [ -f "$file" ]; then
+    rm -f "$file"
+fi
+wget -N -O "$file" "https://openwrt.org/_media/toh_dump_tab_separated_csv.zip"
+
+echo "extract the table of hardware"
+if [ -d "$dir" ]; then
+    rm -rf "$dir"
+fi
+unzip "$file" -d "$dir"
+
+echo "Example content:"
+cat "$dir/"* | head -n 5
+echo
+
+echo "create the content"
+echo -n "var routers = " > "$js_file"
+# change the following lines to include columns
+./generateJSfile.py "$dir/"* \
+    brand model target subtarget flashmb rammb \
+    >> "$js_file"
+echo -n ";" >> "$js_file"
+
