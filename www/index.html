@@ -40,7 +40,7 @@
         <select id="repository" onchange="repositorySelectionChanged()" class="wide">
           <option value="freifunk-berlin/firmware" selected="true">freifunk-berlin/firmware</option>
         </select>
-        <input type="text" id="repositoryInput" class="wide"/>
+        <input type="text" id="repositoryInput" class="wide" onchange="repositorySelectionChanged()"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Firmware-Version</h2>
@@ -50,7 +50,7 @@
         <select id="branch" onchange="branchSelectionChanged()" class="wide">
           <option value="master" selected="true">master</option>
         </select>
-        <input type="text" id="branchInput" class="wide"/>
+        <input type="text" id="branchInput" class="wide" onchange="branchSelectionChanged()"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Router</h2>
@@ -64,6 +64,7 @@
           <span id="modelflashmb"></span>
           <span id="modelinfo"></span>
         </p>
+        Profil: <input type="text" id="modelProfile" />
         <p>
           <a href="https://openwrt.org/" target="_blank">Durchsuche das Wiki, wenn Du den Router hier nicht findest.</a>
         </p>
@@ -117,8 +118,14 @@
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Config-Datei</h2>
         <p class="description">
-          Diese Konfiguration wurde aus der Datei
-          <a id="configFileSourceUrl" href="" target="_blank"></a> geladen.
+          <span id="configSuccess">
+            Diese Konfiguration wurde aus der Datei
+            <a id="configFileSourceUrl" href="" target="_blank"></a> geladen.
+          </span>
+          <span id="configFailure">
+            Es konnte keine Konfiguration geladen werden.
+            Versuche, eine andere Version zu wählen, z.B. "master".
+          </span>
           Du kannst <a id="configFilesUrl" href="" target="_blank">alle Konfigurations-Dateien
           ansehen</a>.
         </p>

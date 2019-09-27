@@ -21,7 +21,7 @@ function getBuildConfig() {
       },
       {
         "path": "/profiles/" + getProfileFileName(),
-        "content" : model.model,
+        "content" : modelProfile.value,
       },
     ],
   };

@@ -6,5 +6,5 @@ cd "`dirname \"$0\"`"
 
 ./create-js-file-from-tab-csv-zip-url "routers" \
   "https://openwrt.org/_media/toh_dump_tab_separated_csv.zip" \
-  brand model target subtarget flashmb rammb
+  brand model target subtarget flashmb rammb firmwareopenwrtsnapshotupgradeurl 
 

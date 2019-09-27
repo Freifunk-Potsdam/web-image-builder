@@ -16,4 +16,6 @@
 - link, wie man einen eigenen Build-Server beitragen kann
 - use + for package listing
 - add version to router
-
+- https://github.com/niccokunzmann/firmware/blob/master/profiles/ar71xx.profiles
+  - :4MB als anhang?
+- cpe-210 hat verschiedene Profile. Welche sollte man nehmen?

@@ -10,6 +10,7 @@ var BUILD_SERVER_LIST = [
 ];
 var MAXIMUM_NUMBER_OF_PACKAGES = 15;
 var DEFAULT_PACKAGE_LIST = "default.txt";
+var SQUASH_END = "-squashfs-sysupgrade.bin";
 
 //////////////////// Helper ////////////////////
 
@@ -72,6 +73,7 @@ function updateModelInfo() {
     modelinfo.className = "";
   }
   modelinfo.innerText = info;
+  modelProfile.value = model.profile;
 }
 
 // get
@@ -119,7 +121,22 @@ function getSelectedModelObject() {
         parseInt(selected[index]) : 
         selected[index];
   });
+  if (model.firmwareopenwrtsnapshotupgradeurl == "NULL") {
+    model.profile = model.model;
+  } else {
+    model.profile = getBuildNameFor(model);
+  }
   return model;
+}
+
+function getBuildNameFor(model) {
+  var match = model.firmwareopenwrtsnapshotupgradeurl.match(
+    (model.subtarget.length ? model.subtarget : model.target) + "-" + "(.*)" + SQUASH_END + "$");
+  if (match == null) {
+    console.log(model);
+    return model.model;
+  }
+  return match[1];
 }
 
 // on change
@@ -184,8 +201,14 @@ function updateBranchSelection() {
   // https://developer.github.com/v3/repos/branches/#list-branches
   var branches = "https://api.github.com/repos/" + getSelectedRepository() + "/branches";
   var tags = "https://api.github.com/repos/" + getSelectedRepository() + "/tags";
+  updateBranchSelectionFromUrl(tags, function() {
+    updateBranchSelectionFromUrl(branches, function() {});
+  });
+}
+
+function updateBranchSelectionFromUrl(url, onComplete) {
   var selectedBranch = getSelectedBranch();
-  branch.innerHTML = "";
+  var page = 1;
   function onSuccess(json) {
     json.forEach(function(branch_) {
       addOptionWithTextTo(branch_.name, branch);
@@ -194,17 +217,18 @@ function updateBranchSelection() {
       branchSelectionChanged();
       selectedBranch = getSelectedBranch();
     }
+    if (json.length == 0) {
+      onComplete();
+    } else {
+      page++;
+      trackRequest(url + "?page=" + page, onSuccess, onError);
+    }
   };
   function onError() {
     alert("Could not load branches of " + getSelectedRepository());
+    onComplete();
   }
-  trackRequest(tags, function(json){
-    onSuccess(json);
-    trackRequest(branches, onSuccess, onError);
-  }, function(json){
-    onError(json);
-    trackRequest(branches, onSuccess, onError);
-  });
+  trackRequest(url + "?page=" + page, onSuccess, onError);
 }
 
 // get
@@ -496,9 +520,11 @@ function updateConfigFile() {
     configFile.rows = raw.split("\n").length - 1;
     configFileSourceUrl.innerText = fileName;
     configFileSourceUrl.href = "https://github.com/" + getSelectedRepository() + "/blob/" + getSelectedBranch() + "/configs/" + fileName + "#readme";
+    configSuccess.className = "";
+    configFailure.className = "hidden";
   }, function() {
-    configFileSourceUrl.innerText = "";
-    configFileSourceUrl.href = "";
+    configSuccess.className = "hidden";
+    configFailure.className = "";
   });
   configFilesUrl.href = "https://github.com/" + getSelectedRepository() + "/tree/" + getSelectedBranch() + "/configs";
 }
