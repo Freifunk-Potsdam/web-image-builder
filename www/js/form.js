@@ -8,7 +8,7 @@ var BUILD_SERVER_LIST = [
   "http://localhost:5000",
   "http://freifunk-build-server.quelltext.eu"
 ];
-var MAXIMUM_NUMBER_OF_PACKAGES = 10;
+var MAXIMUM_NUMBER_OF_PACKAGES = 15;
 
 //////////////////// Helper ////////////////////
 
@@ -248,7 +248,7 @@ function onLoadSearchPackages() {
 }
 
 
-function reloadPackagesElement(packs, input, element) {
+function reloadPackagesElement(packs, input, element, preview) {
   element.innerHTML = "";
   packs.forEach(function(pack){
     var root = document.createElement("span");
@@ -259,8 +259,8 @@ function reloadPackagesElement(packs, input, element) {
     name.className = "name";
     name.innerText = pack.name;
     name.onclick = function() {
-      input.value = pack.name;
-      removePackageFrom(packs, input, element, pack);
+      setPackageName(pack, input, packages, preview);
+      removePackageFrom(pack, packs, input, element, preview);
     }
     root.appendChild(name);
   });
@@ -370,12 +370,17 @@ function addPackageTo(pack, input, packages, preview) {
     return;
   }
   chosenPackages[packages.id].push(pack);
-  input.value = pack.name;
-  reloadPackagesElement(chosenPackages[packages.id], input, packages);
+  reloadPackagesElement(chosenPackages[packages.id], input, packages, preview);
+  setPackageName(pack, input, packages, preview);
 }
 
-function removePackageFrom(packs, input, element, pack) {
+function setPackageName(pack, input, packages, preview) {
+  input.value = pack.name;
+  updatePackagesList(input, packages, preview);
+}
+
+function removePackageFrom(pack, packs, input, element, preview) {
   removeElementFromArray(packs, pack);
-  reloadPackagesElement(packs, input, element);
+  reloadPackagesElement(packs, input, element, preview);
 }
 

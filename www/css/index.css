@@ -41,3 +41,11 @@ body {
   text-align: center;
 }
 
+.package {
+  margin: 0.2em;
+  padding: 0.3em;
+  background-color: #ddd;
+  border-radius: 0.2em;
+  display: inline-block;
+}
+
