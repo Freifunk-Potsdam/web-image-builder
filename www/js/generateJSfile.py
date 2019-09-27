@@ -2,10 +2,10 @@
 import sys
 import json
 
-file = sys.argv[1]
+input = sys.argv[1]
 fields = sys.argv[2:]
 
-with open(file, "rb") as file:
+with open(input, "rb") as file:
     lines = iter(file)
     first_line = next(lines)
     # parse comuln names

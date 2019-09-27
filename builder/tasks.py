@@ -35,6 +35,9 @@ class TaskQueue(threading.Thread):
         """Return a JSON representation of the tasks."""
         return {"tasks": [task.toJSON() for task in self.tasks]}
 
+    def ahead(self):
+        return self.queue.qsize()
+
 class Task:
     """A task to work on."""
     

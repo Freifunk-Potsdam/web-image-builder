@@ -19,3 +19,8 @@ Git is not only needed for the development but also for running the application.
     pip install -r requirements.txt
     ```
 
+To run the web server, do this each time:
+```bash
+python3 -m builder.app
+```
+

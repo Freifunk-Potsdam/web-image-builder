@@ -24,6 +24,10 @@ tasks = TaskQueue()
 def get_tasks():
     return tasks.toJSON()
 
+@app.route("/status.json")
+def get_status():
+    return {"tasks-ahead": tasks.ahead()}
+
 @app.route("/build")
 def build_firmware():
     config = get_config_for_build()

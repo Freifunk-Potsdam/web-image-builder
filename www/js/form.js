@@ -3,7 +3,11 @@
 
 var ALL_MODELS = "Alle Hersteller";
 var ROOT_FIRMWARE_REPO = "https://api.github.com/repos/freifunk-berlin/firmware/forks?sort=stargazers&page=";
-
+var BUILD_SERVER_LIST = [
+  // no / at the end!
+  "http://localhost:5000",
+  "http://freifunk-build-server.quelltext.eu"
+];
 
 //////////////////// Helper ////////////////////
 
@@ -17,7 +21,8 @@ function addOptionWithTextTo(text, select, id) {
 
 window.addEventListener("load", function() {
   fillRouterDropdowns();
-  fillFirmwareDropdown()
+  fillFirmwareDropdown();
+  fillServer();
 });
 
 //////////////////// Router and Model ////////////////////
@@ -200,5 +205,29 @@ function getSelectedBranch() {
   return selection[0].value;
 }
 
+//////////////////// Build Server ////////////////////
 
+// update
+
+function fillServer() {
+  var seletedIndex = BUILD_SERVER_LIST.length;
+  BUILD_SERVER_LIST.forEach(function(server, index) {
+    sendRequest(server + "/status.json", function(status) {
+      var text = status["tasks-ahead"] == 0 ? "frei" : status["tasks-ahead"] + " Aufgabe" + (status["tasks-ahead"] == 1 ? "n" : "");
+      var option = addOptionWithTextTo(server + " - " + text, serverSelection, server);
+      if (seletedIndex > index) {
+        option.selected = true;
+        seletedIndex = index;
+        serverUrl.value = server;
+        serverUrlChanged();
+      }
+    });
+  });
+}
+
+// on change
+
+function serverUrlChanged() {
+  
+}
 

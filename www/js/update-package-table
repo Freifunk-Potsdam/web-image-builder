@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+cd "`dirname \"$0\"`"
+
+./create-js-file-from-tab-csv-zip-url "packages" \
+  "https://openwrt.org/_media/packages_dump_tab_separated_csv.zip" \
+  name version description installedsize sourcecode
+

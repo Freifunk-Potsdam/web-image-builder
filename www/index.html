@@ -9,7 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/grid.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
     <script type="text/javascript" src="js/routers.js"></script>
-    <script type="text/javascript" src="js/routerdb.js"></script>
+    <script type="text/javascript" src="js/packages.js"></script>
+    <script type="text/javascript" src="js/db.js"></script>
     <script type="text/javascript" src="js/form.js"></script>
     <script type="text/javascript" src="js/request.js"></script>
     <script type="text/javascript" src="js/cookie.js"></script>
@@ -19,27 +20,44 @@
     <div class="field-listing grid-whole equalize">
       <div class="field s-grid-whole m-grid-whole l-grid-whole padded">
         <h1>Freifunk-Berlin Firmware Erstellen</h1>
+        <p class="description">
+          Diese Seite erstellt die Berliner Freifunk-Firmware, die man
+          auf Router spielen kann, um zu Freifunk in Berlin und anderen Städten
+          beizutragen.
+          Die diese Firmware wird für viele Router bereits erstellt aber nicht
+          für alle und nicht in allen Versionen.
+          Hier kannst Du Dir die Firmware für Deinen Router in der gewünschten
+          Version erstellen.
+        </p>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        Repository:
+        <h2>Entwickler</h2>
+        <p class="description">
+          Die offizielle Firmware der Berliner ist die Quelle, die voreingestellt ist.
+          Andere entwickeln die Software auch und Du kannst ihre Versionen benutzen.
+        </p>
         <select id="repository" onchange="repositorySelectionChanged()" class="wide">
           <option value="freifunk-berlin/firmware" selected="true">freifunk-berlin/firmware</option>
         </select>
         <input type="text" id="repositoryInput" class="wide"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        Version:
+        <h2>Firmware-Version</h2>
+        <p class="description">
+          Die Firmware hat verschiedene Versionen. Wähle eine:
+        </p>
         <select id="branch" onchange="branchSelectionChanged()" class="wide">
           <option value="master" selected="true">master</option>
         </select>
         <input type="text" id="branchInput" class="wide"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        Router:
-        <select id="brandSelection" onchange="brandSelectionChanged()" class="wide">
-        </select>
-        <select id="modelSelection" onchange="modelSelectionChanged()" class="wide">
-        </select>
+        <h2>Router</h2>
+        <p class="description">
+          OpenWRT unterstützt viele Router. Versuche hier Deinen Router zu finden.
+        </p>
+        <select id="brandSelection" onchange="brandSelectionChanged()" class="wide"></select>
+        <select id="modelSelection" onchange="modelSelectionChanged()" class="wide"></select>
         <p>
           <span id="modelrammb"></span>
           <span id="modelflashmb"></span>
@@ -50,18 +68,55 @@
         </p>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        <a href="https://openwrt.org/docs/techref/instructionset/">Ziel-Architektur</a>:
+        <a href="https://openwrt.org/docs/techref/instructionset/"><h2>Ziel-Architektur</h2></a>
+        <p class="description">
+          Der Prozessor auf den Router hat eine bestimmte Architektur, auf die das
+          die Firmware angepasst werden muss.
+          Diese Felder werden automatisch bei der Auswahl des Routers gefüllt.
+          Manchmal sind sie auch nicht angegeben.
+          Dann kannst Du sie hier selber eintragen.
+        </p>
         <input type="text" id="modelTarget" class="wide"/>
         <input type="text" id="modelSubtarget" class="wide"/>
-        Du kannst in die Felder eigene Werte eintragen.
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        Wenn Du eine E-Mail bekommen magst, wenn der Build vorbei ist,
-        dann trage sie hier ein:
-        <input type="text" id="modelSubtarget" class="wide"/>
+        <h2>Pakete zum Installieren</h2>
+        <p class="description">
+          Diese Pakete werden in das Image einkompiliert.
+        </p>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <h2>Pakete zum Kompilieren</h2>
+        <p class="description">
+          Diese Pakete werden nicht in das Image eingebaut. Sie werden kompiliert und können später mit opkg oder über die Oberfläche installiert werden.
+        </p>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <h2>Config-Datei</h2>
+        <p class="description">
+          Diese Firmware wurde aus der Datei <a id="configFileSourceUrl" href=""></a>
+          geladen.
+        </p>
+        <textarea id="configFile" class="wide"></textarea>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <h2>Benachrichtigung</h2>
+        <p class="description">
+          Wenn Du eine E-Mail bekommen magst, wenn der Build vorbei ist,
+          dann trage sie hier ein:
+        </p>
+        <input type="text" id="emailInput" class="wide"/>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <h2>Server:</h2>
+        <p class="description">
+          Wähle einen Build-Server oder trage die URL unten ein.
+        </p>
+        <select id="serverSelection" class="wide"></select>
+        <input type="text" id="serverUrl" onchange="serverUrlChanged()" class="wide"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner centered">
-        <input type="button" onclick="startBuild()" value="Erstellen">
+        <input type="button" onclick="startBuild()" value="Firmware Erstellen">
       </div>
     </div>
   </body>

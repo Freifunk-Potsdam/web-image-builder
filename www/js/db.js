@@ -27,14 +27,30 @@ var routerDB = {
   }
 }
 
+var packageDB = {
+  columnIndexOf : {
+    // will be filled on load
+  },
+  packageFromId : function(packageId) {
+    return routers.packages[parseInt(packageId)];
+  }
+}
+
 window.addEventListener("load", function() {
   // fill the column names
   routers.column_names.forEach(function(element, index) {
     routerDB.columnIndexOf[element] = index;
   })
+  packages.column_names.forEach(function(element, index) {
+    packageDB.columnIndexOf[element] = index;
+  })
   // sort the routers and give them ids
   routers.models.sort(compareModel)
   routers.models.forEach(function(model, index){
+    model.id = "" + index;
+  });
+  // the packages are sorted. they receive an id
+  packages.models.forEach(function(model, index){
     model.id = "" + index;
   });
 });

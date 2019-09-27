@@ -10,6 +10,7 @@ function getBuildConfig() {
     "target" : modelTarget.value,
     "subtarget" : modelSubtarget.value,
     "model"  : model.model,
+    "email"  : emailInput.value,
   };
   return config;
 }

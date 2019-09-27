@@ -8,4 +8,9 @@
   - make searchable
   - create download config from router
   - link homepage
-
+- packages
+  - help text
+  - list packages installed by default
+- repo+branch: hide field if not custom
+- model as text input
+- link, wie man einen eigenen Build-Server beitragen kann

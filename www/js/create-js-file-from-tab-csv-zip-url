@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Download the second argument and add the fields to a table in
+# the js file of the second argument.
+# 
+# create-js-file-from-tab-csv <file-name> <download-url> <column-names>*
+#
+
+set -e
+
+cd "`dirname \"$0\"`"
+
+arg_file_name="$1"
+shift
+arg_source_url="$1"
+shift
+
+js_file="./$arg_file_name.js"
+file="/tmp/$arg_file_name.zip"
+dir="$file.content"
+
+echo "retrieve the table of hardware"
+if [ -f "$file" ]; then
+    rm -f "$file"
+fi
+wget -N -O "$file" "$arg_source_url"
+
+echo "extract the table of hardware"
+if [ -d "$dir" ]; then
+    rm -rf "$dir"
+fi
+unzip "$file" -d "$dir"
+
+echo "Example content:"
+cat "$dir/"* | head -n 5
+echo
+
+echo "create the content"
+echo -n "var $arg_file_name = " > "$js_file"
+# change the following lines to include columns
+./generateJSfile.py "$dir/"* "$@" >> "$js_file"
+echo -n ";" >> "$js_file"
+

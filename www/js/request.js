@@ -40,7 +40,7 @@ function sendRequest(url, onSuccess, onError){
   var XHR = new XMLHttpRequest();
   if (!onError) {
     onError = function() {
-      log.log("ERROR: " + url + " failed.");
+      console.log("ERROR: " + url + " failed.");
     }
   }
   // Define what happens on successful data submission
