@@ -400,7 +400,7 @@ function updatePackagesFromDefault() {
   }
   var selected = getPackageFile();
   // https://developer.github.com/v3/repos/contents/#response-if-content-is-a-directory
-  var url = "https://api.github.com/repos/" + getSelectedRepository() + "/contents/packages/?ref=" + getSelectedBranch();
+  var url = "https://api.github.com/repos/" + getSelectedRepository() + "/contents/packages?ref=" + getSelectedBranch();
   packageFile.innerHTML = "";
   trackRequest(url, function(json) {
     loadingPackagesFile = false;
@@ -436,6 +436,7 @@ function updatePackagesFromDefault() {
     if (selected != newName) {
       packageFileChanged();
     }
+    console.log("updatePackagesFromDefault", names, url);
   }, function() {
     loadingPackagesFile = false;
   });

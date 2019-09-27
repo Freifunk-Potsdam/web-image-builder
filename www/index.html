@@ -84,17 +84,19 @@
         <h2>Pakete zum Installieren</h2>
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start">Pakete</a>
-          werden in das Image einkompiliert.
-          Du kannst die Pakete aus den Voreinstellungen laden.
+          werden in die Firmware eingebaut.
+          Wähle eine Voreinstellung, zu der deine Pakete hinzugefügt werden.
         </p>
         <select id="packageFile" onchange="packageFileChanged()" class="wide"></select>
-        <input type="text" id="packagesYInput"
-          onkeyup="updatePackagesList(packagesYInput, packagesY, packagePreviewY)"
-          onchange="addPackageFrom(packagesYInput, packagesY, packagePreviewY)">
-        <span class="packages" id="packagesY">
-        </span>
-        <ul class="packagePreview" id="packagePreviewY">
-        </ul>
+        <p>
+          <input type="text" id="packagesYInput" placeholder="Paketname"
+            onkeyup="updatePackagesList(packagesYInput, packagesY, packagePreviewY)"
+            onchange="addPackageFrom(packagesYInput, packagesY, packagePreviewY)">
+          <span class="packages" id="packagesY">
+          </span>
+          <ul class="packagePreview" id="packagePreviewY">
+          </ul>
+        </p>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Pakete zum Kompilieren</h2>
@@ -103,7 +105,7 @@
           werden nicht in das Image eingebaut. Sie werden kompiliert und können
           später mit opkg oder über die Oberfläche installiert werden.
         </p>
-        <input type="text" id="packagesMInput"
+        <input type="text" id="packagesMInput" placeholder="Paketname"
           onkeyup="updatePackagesList(packagesMInput, packagesM, packagePreviewM)"
           onchange="addPackageFrom(packagesMInput, packagesM, packagePreviewM)">
         <span class="packages" id="packagesM">
