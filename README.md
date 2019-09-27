@@ -1,3 +1,7 @@
+# Web Image Builder
+
+Weboberfläche und Server, um die Berliner Firmware zu bauen.
+
 ## Development
 
 You need Python 3 and Git.
