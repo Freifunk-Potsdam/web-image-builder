@@ -85,7 +85,9 @@
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start">Pakete</a>
           werden in das Image einkompiliert.
+          Du kannst die Pakete aus den Voreinstellungen laden.
         </p>
+        <select id="packageFile" onchange="packageFileChanged()" class="wide"></select>
         <input type="text" id="packagesYInput"
           onkeyup="updatePackagesList(packagesYInput, packagesY, packagePreviewY)"
           onchange="addPackageFrom(packagesYInput, packagesY, packagePreviewY)">

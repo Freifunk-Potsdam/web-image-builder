@@ -9,6 +9,7 @@ var BUILD_SERVER_LIST = [
   "http://freifunk-build-server.quelltext.eu"
 ];
 var MAXIMUM_NUMBER_OF_PACKAGES = 15;
+var DEFAULT_PACKAGE_LIST = "default.txt";
 
 //////////////////// Helper ////////////////////
 
@@ -129,6 +130,8 @@ function brandSelectionChanged() {
 
 function modelSelectionChanged() {
   updateModelInfo();
+  updateConfigFile();
+  updatePackagesFromDefault();
 }
 
 //////////////////// Repository ////////////////////
@@ -142,6 +145,8 @@ function repositorySelectionChanged() {
 
 function branchSelectionChanged() {
   branchInput.value = getSelectedBranch();
+  updateConfigFile();
+  updatePackagesFromDefault();
 }
 
 // update
@@ -382,5 +387,95 @@ function setPackageName(pack, input, packages, preview) {
 function removePackageFrom(pack, packs, input, element, preview) {
   removeElementFromArray(packs, pack);
   reloadPackagesElement(packs, input, element, preview);
+}
+
+//////////////////// Package Flavor ////////////////////
+
+// update
+
+var loadingPackagesFile = false;
+function updatePackagesFromDefault() {
+  if (loadingPackagesFile) {
+    return;
+  }
+  var selected = getPackageFile();
+  // https://developer.github.com/v3/repos/contents/#response-if-content-is-a-directory
+  var url = "https://api.github.com/repos/" + getSelectedRepository() + "/contents/packages/?ref=" + getSelectedBranch();
+  packageFile.innerHTML = "";
+  trackRequest(url, function(json) {
+    loadingPackagesFile = false;
+    var names = [];
+    json.forEach(function(file) {
+      if (file.name.endsWith(".txt")) {
+          addOptionWithTextTo(file.name, packageFile, file.name);
+          names.push(file.name);
+      }
+    });
+    var router = getSelectedModelObject();
+    var newName;
+    if (names.length) {
+      if (router.flashmb <= 4) {
+        newName = to4MBFileName(selected);
+        if (!names.includes(newName)) {
+          newName = to4MBFileName(names[0]);
+        }
+      } else {
+        newName = toMoreThan4MBFileName(selected);
+        if (!names.includes(newName)) {
+          newName = toMoreThan4MBFileName(names[0]);
+        }
+      }
+      if (!names.includes(newName)) {
+        newName = names[0];
+      }
+    } else {
+      newName = DEFAULT_PACKAGE_LIST;
+    }
+    var index = names.indexOf(newName);
+    packageFile.selectedIndex = index == -1 ? 0 : index;
+    if (selected != newName) {
+      packageFileChanged();
+    }
+  }, function() {
+    loadingPackagesFile = false;
+  });
+  loadingPackagesFile = true;
+}
+
+function to4MBFileName(name) {
+  if (name.toLowerCase().includes("_4mb")) {
+    return name;
+  }
+  return name.slice(0, name.length - 4) + "_4MB.txt";
+}
+
+function toMoreThan4MBFileName(name) {
+  if (name.toLowerCase().includes("_4mb")) {
+    return name.slice(0, name.length - 8) + ".txt";
+  }
+  return name;
+}
+
+// on change
+
+function packageFileChanged() {
+  
+}
+
+// get
+
+function getPackageFile() {
+  var selection = packageFile.selectedOptions;
+  if (selection.length == 0) {
+    return "default.txt";
+  }
+  return selection[0].value;
+}
+
+//////////////////// Config File ////////////////////
+
+// update
+
+function updateConfigFile() {
 }
 
