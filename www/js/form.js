@@ -8,6 +8,7 @@ var BUILD_SERVER_LIST = [
   "http://localhost:5000",
   "http://freifunk-build-server.quelltext.eu"
 ];
+var MAXIMUM_NUMBER_OF_PACKAGES = 10;
 
 //////////////////// Helper ////////////////////
 
@@ -23,6 +24,7 @@ window.addEventListener("load", function() {
   fillRouterDropdowns();
   fillFirmwareDropdown();
   fillServer();
+  onLoadSearchPackages();
 });
 
 //////////////////// Router and Model ////////////////////
@@ -187,8 +189,13 @@ function updateBranchSelection() {
   function onError() {
     alert("Could not load branches of " + getSelectedRepository());
   }
-  trackRequest(tags, onSuccess, onError);
-  trackRequest(branches, onSuccess, onError);
+  trackRequest(tags, function(json){
+    onSuccess(json);
+    trackRequest(branches, onSuccess, onError);
+  }, function(json){
+    onError(json);
+    trackRequest(branches, onSuccess, onError);
+  });
 }
 
 // get
@@ -229,5 +236,105 @@ function fillServer() {
 
 function serverUrlChanged() {
   
+}
+
+//////////////////// Packages ////////////////////
+
+// update
+
+function onLoadSearchPackages() {
+  updatePackagesList(packagesYInput, packagesY, packagePreviewY);
+}
+
+// on change
+
+function updatePackagesList(input, packages, preview) {
+  var result = packageDB.findPackages(input.value);
+  preview.innerHTML = "";
+  var updateLastPackage = function(pack) {
+    return false;
+  };
+  var first = true;
+  result.slice(0, MAXIMUM_NUMBER_OF_PACKAGES).forEach(function(packageId, index) {
+    var pack = packageDB.packageFromId(packageId);
+    if (updateLastPackage(pack)) {
+      return;
+    }
+    // root element
+    var root = document.createElement("li");
+    if (first) {
+      root.className = "first";
+      first = false;
+    }
+    preview.appendChild(root);
+    
+    // title
+    var name = document.createElement("a");
+    name.className = "name";
+    name.innerText = pack.name;
+    name.onclick = function() {
+      addPackageTo(pack, packages, preview);
+    }
+    root.appendChild(name);
+    root.appendChild(document.createTextNode(" - "));
+    
+    // versions
+    var versions = document.createElement("span");
+    versions.className = "versions";
+    root.appendChild(versions);
+    
+    // version
+    var firstVersion = true;
+    function addVersion(pack) {
+      if (!firstVersion) {
+        versions.appendChild(document.createTextNode(", "));
+      }
+      var version = document.createElement("a");
+      version.className = "version";
+      version.innerText = pack.version;
+      if (pack.sourcecodeurl) {
+        version.href = pack.sourcecodeurl;
+      }
+      versions.appendChild(version);
+      firstVersion = false;
+    }
+    addVersion(pack);
+    root.appendChild(document.createTextNode(" "));
+    
+    // description link
+    var descriptionLink = document.createElement("a");
+    descriptionLink.className = "descriptionLink";
+    descriptionLink.innerText = "?";
+    descriptionLink.onclick = function() {
+      description.innerText = description.innerText ? "" : pack.description;
+    }
+    root.appendChild(descriptionLink);
+    
+    // desctiption
+    var description = document.createElement("div");
+    description.className = "description";
+    root.appendChild(description);
+    
+    // next package
+    updateLastPackage = function(newPack) {
+      if (newPack.name == pack.name) {
+        addVersion(newPack);
+        return true;
+      }
+      return false;
+    }
+  });
+}
+
+function addPackageFrom(input, packages, preview) {
+  var packageIds = packageDB.findPackages(input.value);
+  if (packageIds) {
+    var pack = packageDB.packageFromId(packageIds[0]);
+    addPackageTo(pack, packages, preview);
+  }
+}
+
+function addPackageTo(pack, packages, preview) {
+  console.log(pack);
 }
 

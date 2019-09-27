@@ -84,6 +84,13 @@
         <p class="description">
           Diese Pakete werden in das Image einkompiliert.
         </p>
+        <input type="text" id="packagesYInput"
+          onkeyup="updatePackagesList(packagesYInput, packagesY, packagePreviewY)"
+          onchange="addPackageFrom(packagesYInput, packagesY, packagePreviewY)">
+        <ul class="packagePreview" id="packagePreviewY">
+        </ul>
+        <span class="packages" id="packagesY">
+        </span>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Pakete zum Kompilieren</h2>
