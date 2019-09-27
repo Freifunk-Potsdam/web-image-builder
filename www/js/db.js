@@ -54,19 +54,22 @@ var packageDB = {
     // 4. description matches
     var terms = searchTerm.toLowerCase().split(" ").filter(function(x){return x});
     var priority = {
-      // id: {nameCount, nameFirstTerm, firstTermIndex, descriptionCount}
+      // id: {nameCount, nameFirstTerm, firstTermIndex, fillOfTerms, descriptionCount}
     };
     var maxPackageNameLength = 0;
     var maxDescriptionCount = 0;
     packages.models/*.slice(0, 10)*/.forEach(function(pack) {
-      var packageName = pack[packageDB.columnIndexOf.name].toLowerCase();
+      var packageName = pack[packageDB.columnIndexOf.name];
       if (packageName.length > maxPackageNameLength) {
         maxPackageNameLength = packageName.length;
       }
+    });
+    packages.models/*.slice(0, 10)*/.forEach(function(pack) {
+      var packageName = pack[packageDB.columnIndexOf.name].toLowerCase();
       var packageDescription = pack[packageDB.columnIndexOf.description].toLowerCase();
       terms.forEach(function(term, index) {
         if (!priority[pack.id]) {
-          priority[pack.id] = {nameCount: 0, nameFirstTerm: terms.length, firstTermIndex: 0, descriptionCount: 0};
+          priority[pack.id] = {nameCount: 0, nameFirstTerm: terms.length, firstTermIndex: maxPackageNameLength, fillOfTerms: 0, descriptionCount: 0, packageName: packageName};
         }
         var match = priority[pack.id];
         var nameIndex = packageName.indexOf(term);
@@ -76,6 +79,7 @@ var packageDB = {
             match.nameFirstTerm = index;
             match.firstTermIndex = nameIndex;
           }
+          match.fillOfTerms += term.length;
         }
         match.descriptionCount += packageDescription.split(term).length - 1;
         if (maxDescriptionCount < match.descriptionCount) {
@@ -83,18 +87,21 @@ var packageDB = {
         }
       });
     });
+    maxPackageNameLength++;
+    maxDescriptionCount++;
     var intPrio = {};
-    packages.models.forEach(function(pack) {
+    packages.models.forEach(function(pack, index) {
       var prio = priority[pack.id];
       if (!prio) {
         intPrio[pack.id] = 0;
         return;
       }
       intPrio[pack.id] = 
-        // nameCount, nameFirstTerm, firstTermIndex, descriptionCount
-        prio.nameCount * (terms.length + 1) * maxPackageNameLength * maxDescriptionCount +
-        (terms.length - prio.nameFirstTerm) * maxPackageNameLength * maxDescriptionCount +
-        (maxPackageNameLength - 1 - prio.firstTermIndex)           * maxDescriptionCount +
+        // nameCount, nameFirstTerm, firstTermIndex, fillOfTerms, descriptionCount
+        prio.nameCount                           * (terms.length + 1) * maxPackageNameLength * maxPackageNameLength * maxDescriptionCount +
+        (terms.length - prio.nameFirstTerm)                           * maxPackageNameLength * maxPackageNameLength * maxDescriptionCount +
+        (maxPackageNameLength - 1 - prio.firstTermIndex)                                     * maxPackageNameLength * maxDescriptionCount +
+        Math.ceil((maxPackageNameLength - 1) * prio.fillOfTerms / prio.packageName.length)                          * maxDescriptionCount +
         prio.descriptionCount
         ;
     });
@@ -114,9 +121,9 @@ var packageDB = {
       return val;
     });
     return packs.map(function(pack, index){
-//      if (index < 10) {
-//        console.log(pack[packageDB.columnIndexOf.name], intPrio[pack.id], priority[pack.id]);
-//      }
+      if (index < 10) {
+        console.log(pack[packageDB.columnIndexOf.name], intPrio[pack.id], priority[pack.id]);
+      }
       return pack.id;
     });
   }
