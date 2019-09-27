@@ -14,3 +14,4 @@
 - repo+branch: hide field if not custom
 - model as text input
 - link, wie man einen eigenen Build-Server beitragen kann
+- use + for package listing

@@ -31,9 +31,13 @@ var packageDB = {
   columnIndexOf : {
     // will be filled on load
   },
+  cachedPackages: {},
   packageFromId : function(packageId) {
+    if (packageDB.cachedPackages[packageId]) {
+      return packageDB.cachedPackages[packageId];
+    }
     var pack = packages.models[parseInt(packageId)];
-    var result = {
+    var result = packageDB.cachedPackages[packageId] = {
       id: packageId
     };
     packages.column_names.forEach(function(name) {
@@ -121,9 +125,9 @@ var packageDB = {
       return val;
     });
     return packs.map(function(pack, index){
-      if (index < 10) {
-        console.log(pack[packageDB.columnIndexOf.name], intPrio[pack.id], priority[pack.id]);
-      }
+//      if (index < 10) {
+//        console.log(pack[packageDB.columnIndexOf.name], intPrio[pack.id], priority[pack.id]);
+//      }
       return pack.id;
     });
   }

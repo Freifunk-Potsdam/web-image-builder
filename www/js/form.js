@@ -244,6 +244,26 @@ function serverUrlChanged() {
 
 function onLoadSearchPackages() {
   updatePackagesList(packagesYInput, packagesY, packagePreviewY);
+  updatePackagesList(packagesMInput, packagesM, packagePreviewM);
+}
+
+
+function reloadPackagesElement(packs, input, element) {
+  element.innerHTML = "";
+  packs.forEach(function(pack){
+    var root = document.createElement("span");
+    root.className = "package";
+    element.appendChild(root);
+    
+    var name = document.createElement("a");
+    name.className = "name";
+    name.innerText = pack.name;
+    name.onclick = function() {
+      input.value = pack.name;
+      removePackageFrom(packs, input, element, pack);
+    }
+    root.appendChild(name);
+  });
 }
 
 // on change
@@ -273,7 +293,7 @@ function updatePackagesList(input, packages, preview) {
     name.className = "name";
     name.innerText = pack.name;
     name.onclick = function() {
-      addPackageTo(pack, packages, preview);
+      addPackageTo(pack, input, packages, preview);
     }
     root.appendChild(name);
     root.appendChild(document.createTextNode(" - "));
@@ -285,7 +305,11 @@ function updatePackagesList(input, packages, preview) {
     
     // version
     var firstVersion = true;
+    var versionsAdded = [];
     function addVersion(pack) {
+      if (versionsAdded.includes(pack.version)) {
+        return;
+      }
       if (!firstVersion) {
         versions.appendChild(document.createTextNode(", "));
       }
@@ -295,8 +319,10 @@ function updatePackagesList(input, packages, preview) {
       if (pack.sourcecodeurl) {
         version.href = pack.sourcecodeurl;
       }
+      version.target = "_blank";
       versions.appendChild(version);
       firstVersion = false;
+      versionsAdded.push(pack.version);
     }
     addVersion(pack);
     root.appendChild(document.createTextNode(" "));
@@ -328,13 +354,28 @@ function updatePackagesList(input, packages, preview) {
 
 function addPackageFrom(input, packages, preview) {
   var packageIds = packageDB.findPackages(input.value);
-  if (packageIds) {
+  if (packageIds.length) {
     var pack = packageDB.packageFromId(packageIds[0]);
-    addPackageTo(pack, packages, preview);
+    console.log(pack);  
+    addPackageTo(pack, input, packages, preview);
   }
 }
 
-function addPackageTo(pack, packages, preview) {
-  console.log(pack);
+var chosenPackages = {
+  packagesY: [],
+  packagesM: []
+};
+function addPackageTo(pack, input, packages, preview) {
+  if (chosenPackages[packages.id].includes(pack)) {
+    return;
+  }
+  chosenPackages[packages.id].push(pack);
+  input.value = pack.name;
+  reloadPackagesElement(chosenPackages[packages.id], input, packages);
+}
+
+function removePackageFrom(packs, input, element, pack) {
+  removeElementFromArray(packs, pack);
+  reloadPackagesElement(packs, input, element);
 }
 
