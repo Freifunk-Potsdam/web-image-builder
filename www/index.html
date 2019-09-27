@@ -77,8 +77,8 @@
           Manchmal sind sie auch nicht angegeben.
           Dann kannst Du sie hier selber eintragen.
         </p>
-        <input type="text" id="modelTarget" class="wide"/>
-        <input type="text" id="modelSubtarget" class="wide"/>
+        <input type="text" id="modelTarget" class="wide" onkeyup="modelTargetChanged()" />
+        <input type="text" id="modelSubtarget" class="wide" onkeyup="modelTargetChanged()" />
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Pakete zum Installieren</h2>
@@ -102,8 +102,9 @@
         <h2>Pakete zum Kompilieren</h2>
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start">Pakete</a>
-          werden nicht in das Image eingebaut. Sie werden kompiliert und können
-          später mit opkg oder über die Oberfläche installiert werden.
+          werden nicht in die Firmware eingebaut.
+          Sie werden kompiliert und können später mit opkg oder
+          über die Oberfläche installiert werden.
         </p>
         <input type="text" id="packagesMInput" placeholder="Paketname"
           onkeyup="updatePackagesList(packagesMInput, packagesM, packagePreviewM)"
@@ -117,8 +118,8 @@
         <h2>Config-Datei</h2>
         <p class="description">
           Diese Konfiguration wurde aus der Datei
-          <a id="configFileSourceUrl" href=""></a> geladen.
-          Du kannst <a id="configFilesUrl" href="">alle Konfigurations-Dateien
+          <a id="configFileSourceUrl" href="" target="_blank"></a> geladen.
+          Du kannst <a id="configFilesUrl" href="" target="_blank">alle Konfigurations-Dateien
           ansehen</a>.
         </p>
         <textarea id="configFile" class="wide"></textarea>

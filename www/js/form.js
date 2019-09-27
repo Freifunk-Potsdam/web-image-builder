@@ -130,6 +130,10 @@ function brandSelectionChanged() {
 
 function modelSelectionChanged() {
   updateModelInfo();
+  modelTargetChanged();
+}
+
+function modelTargetChanged() {
   updateConfigFile();
   updatePackagesFromDefault();
 }
@@ -502,13 +506,12 @@ function updateConfigFile() {
 // get
 
 function getConfigFileName() {
-  var model = getSelectedModelObject();
-  return model.target + "-" + model.subtarget + ".config";
+  return modelTarget.value + "-" + modelSubtarget.value + ".config";
 }
 
 function getProfileFileName() {
   var model = getSelectedModelObject();
-  return model.target + "-" + model.subtarget + ".profiles";
+  return modelTarget.value + "-" + modelSubtarget.value + ".profiles";
 }
 
 function getConfigFileContent() {
