@@ -14,7 +14,7 @@ function trackRequest(url, onSuccess, onFailure, cache) {
     try {
       json = JSON.parse(cachedValue);
     } catch(e) {
-      console.log("error: " + e);
+      onSuccess(cachedValue);
     }
     if (json != undefined) {
       onSuccess(json);
@@ -50,7 +50,7 @@ function sendRequest(url, onSuccess, onError){
         try {
           var json = JSON.parse(XHR.responseText);
         } catch (e) {
-          onError(event, e);
+          onSuccess(XHR.responseText, event);
           return;
         }
         onSuccess(json, event);

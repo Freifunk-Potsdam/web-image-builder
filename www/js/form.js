@@ -389,6 +389,12 @@ function removePackageFrom(pack, packs, input, element, preview) {
   reloadPackagesElement(packs, input, element, preview);
 }
 
+// get
+
+function getPackageFileContent() {
+  return "\n# from we ui\n" + chosenPackages.packagesY.map(function(pack){return pack.name;}).join("\n");
+}
+
 //////////////////// Package Flavor ////////////////////
 
 // update
@@ -478,5 +484,36 @@ function getPackageFile() {
 // update
 
 function updateConfigFile() {
+  var fileName = getConfigFileName();
+  var url = "https://raw.githubusercontent.com/" + getSelectedRepository() + "/" + getSelectedBranch() + "/configs/" + fileName;
+  configFile.value = "";
+  trackRequest(url, function(raw) {
+    configFile.value = raw;
+    configFile.rows = raw.split("\n").length - 1;
+    configFileSourceUrl.innerText = fileName;
+    configFileSourceUrl.href = "https://github.com/" + getSelectedRepository() + "/blob/" + getSelectedBranch() + "/configs/" + fileName + "#readme";
+  }, function() {
+    configFileSourceUrl.innerText = "";
+    configFileSourceUrl.href = "";
+  });
+  configFilesUrl.href = "https://github.com/" + getSelectedRepository() + "/tree/" + getSelectedBranch() + "/configs";
+}
+
+// get
+
+function getConfigFileName() {
+  var model = getSelectedModelObject();
+  return model.target + "-" + model.subtarget + ".config";
+}
+
+function getProfileFileName() {
+  var model = getSelectedModelObject();
+  return model.target + "-" + model.subtarget + ".profiles";
+}
+
+function getConfigFileContent() {
+  return configFile.value + "\n" + chosenPackages.packagesM.map(function(pack){
+    return "CONFIG_PACKAGE_" + pack.name + "=m";
+  }).join("\n");
 }
 
