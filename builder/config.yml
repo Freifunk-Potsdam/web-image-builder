@@ -57,4 +57,6 @@ build:
 # this is set by the request's host header
 host: "localhost:5000"
 
+# this is the configuration which is not usedbut sent by the client
+remaining_config: null
 

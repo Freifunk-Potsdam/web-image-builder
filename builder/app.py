@@ -1,6 +1,6 @@
 """web app for the builder"""
 from flask import Flask, send_file, abort, render_template, redirect, request
-from .tasks import TaskQueue, SetupRepository, Build, SendEmail
+from .tasks import TaskQueue, SetupRepository, Build, SendEmail, SaveBuildResults
 from flask_cors import CORS
 from .config import config
 import time
@@ -14,12 +14,13 @@ def get_config_for_build():
     # see https://stackoverflow.com/a/29387151
     conf.host = request.headers.get("Host", conf.host)
     req = request.json;
-    conf.firmware.repository.git_url = req["git-url"]
-    conf.firmware.repository.branch = req["branch"]
-    conf.build.target = req["target"]
-    conf.build.package_list = [req["packages"]]
-    conf.email = req["email"]
-    conf.files = req["files"]
+    conf.firmware.repository.git_url = req.pop("git-url")
+    conf.firmware.repository.branch = req.pop("branch")
+    conf.build.target = req.pop("target")
+    conf.build.package_list = [req.pop("packages")]
+    conf.email = req.pop("email")
+    conf.files = req.pop("files")
+    conf.remaining_config = req;
     return conf
 
 app = Flask(__name__, static_url_path="")
@@ -43,7 +44,11 @@ def build_firmware():
     tasks.add(repo)
     build = Build(repo)
     tasks.add(build)
-    send_mail = SendEmail(build)
+    build = Build(repo)
+    tasks.add(build)
+    save = SaveBuildResults(build)
+    tasks.add(save)
+    send_mail = SendEmail(save)
     tasks.add(send_mail)
     return config.toJSON()
 
@@ -75,6 +80,7 @@ def dir_listing(req_path):
 
     # Show directory contents
     files = os.listdir(abs_path)
+    files.sort()
     return render_template('files.html', files=files, path=req_path)
 
 if __name__ == "__main__":

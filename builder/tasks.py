@@ -10,6 +10,7 @@ import threading
 import traceback
 import datetime
 import tempfile
+import json
 
 class TaskQueue(threading.Thread):
 
@@ -131,7 +132,8 @@ class Build(Task):
     def run(self):
         try:
             self.execute(
-                ["make", "-j", str(self.config.cores),
+                ["echo",
+                 "make", "-j", str(self.config.cores),
                  "TARGET=" + self.config.build.target,
                  "PACKAGES_LIST_DEFAULT=" + " ".join(self.config.build.package_list)],
                 cwd=self.config.firmware.directory)
@@ -148,8 +150,9 @@ class SaveBuildResults(Task):
         self.config.results.target = new_target = os.path.join(
             self.config.results.target, self.config.build.id)
         os.makedirs(new_target)
+        os.makedirs(self.config.results.source, exist_ok=True)
         self.execute(["cp", "-rT", self.config.results.source, self.config.results.target])
-        result = os.pah.join(new_target, self.config.build.result);
+        result = os.path.join(new_target, self.config.build.result);
         with open(result, "w", encoding="UTF-8") as file:
             json.dump(self.config.toJSON(), file)
 
