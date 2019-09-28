@@ -271,6 +271,12 @@ function serverUrlChanged() {
   
 }
 
+// get
+
+function getServerUrl() {
+  return serverUrl.value;
+}
+
 //////////////////// Packages ////////////////////
 
 // update
@@ -420,7 +426,7 @@ function removePackageFrom(pack, packs, input, element, preview) {
 // get
 
 function getPackageFileContent() {
-  return "\n# from we ui\n" + chosenPackages.packagesY.map(function(pack){return pack.name;}).join("\n");
+  return "\n# from the web-ui\n" + chosenPackages.packagesY.map(function(pack){return pack.name;}).join("\n");
 }
 
 //////////////////// Package Flavor ////////////////////
@@ -505,6 +511,11 @@ function getPackageFile() {
     return "default.txt";
   }
   return selection[0].value;
+}
+
+function getPackageFileName() {
+  var name = getPackageFile();
+  return name.slice(0, name.length - 4);
 }
 
 //////////////////// Config File ////////////////////

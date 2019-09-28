@@ -110,18 +110,35 @@ class SetupRepository(Task):
         os.makedirs(self.config.firmware.directory)
         self.execute(["git", "clone", 
             "--branch", self.config.firmware.repository.branch, 
+            "--depth", str(self.config.firmware.repository.depth),
             self.config.firmware.repository.git_url,
             self.config.firmware.directory])
+        for file in self.config.files:
+            assert any(file["path"].startswith(directory) for directory in self.config.allowed_directories), file["path"] + " should be one of " + ", ".join(self.config.allowed_directories)
+            assert file["path"].startswith("/") and not ".." in file["path"]
+            path = self.config.firmware.directory + file["path"]
+            if "append" in file:
+                with open(path, "a", encoding="UTF-8") as openFile:
+                    openFile.write(file["append"])
+            else: # content
+                with open(path, "w", encoding="UTF-8") as openFile:
+                    openFile.write(file["content"])
 
 
 class Build(Task):
     """Build the firmware."""
     
     def run(self):
-        self.execute(
-            ["make", "-j", str(self.config.cores)],
-            cwd=self.config.firmware.directory)
-        self.config.build_status = "success"
+        try:
+            self.execute(
+                ["make", "-j", str(self.config.cores),
+                 "TARGET=" + self.config.build.target,
+                 "PACKAGES_LIST_DEFAULT=" + " ".join(self.config.build.package_list)],
+                cwd=self.config.firmware.directory)
+        except:
+            self.config.build.status = "failure"
+        else:
+            self.config.build.status = "success"
 
 class SaveBuildResults(Task):
     """Save the build results so that they can be used later."""
@@ -129,9 +146,12 @@ class SaveBuildResults(Task):
     def run(self):
         self.target = self.config.results.target
         self.config.results.target = new_target = os.path.join(
-            self.config.results.target, "build-" + self.config.build_id + "-" + self.config.get("build_status", "failed"))
+            self.config.results.target, self.config.build.id)
         os.makedirs(new_target)
         self.execute(["cp", "-rT", self.config.results.source, self.config.results.target])
+        result = os.pah.join(new_target, self.config.build.result);
+        with open(result, "w", encoding="UTF-8") as file:
+            json.dump(self.config.toJSON(), file)
 
 class SendEmail(Task):
     """Send and e-mail to the builder that the task is done."""

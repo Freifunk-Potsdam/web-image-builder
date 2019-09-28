@@ -1,5 +1,5 @@
 """web app for the builder"""
-from flask import Flask, send_file, abort, render_template, redirect
+from flask import Flask, send_file, abort, render_template, redirect, request
 from .tasks import TaskQueue, SetupRepository, Build, SendEmail
 from flask_cors import CORS
 from .config import config
@@ -7,11 +7,19 @@ import time
 import os
 
 def get_config_for_build():
+    """Create the build config from the data that was sent by api.js."""
     conf = config.clone()
-    conf.build_id = time.strftime(conf.build_id_format)
+    conf.build.id = time.strftime(conf.build.id_format)
     # get headers in flask
     # see https://stackoverflow.com/a/29387151
     conf.host = request.headers.get("Host", conf.host)
+    req = request.json;
+    conf.firmware.repository.git_url = req["git-url"]
+    conf.firmware.repository.branch = req["branch"]
+    conf.build.target = req["target"]
+    conf.build.package_list = [req["packages"]]
+    conf.email = req["email"]
+    conf.files = req["files"]
     return conf
 
 app = Flask(__name__, static_url_path="")
@@ -28,7 +36,7 @@ def get_tasks():
 def get_status():
     return {"tasks-ahead": tasks.ahead()}
 
-@app.route("/build")
+@app.route("/build", methods=["POST"])
 def build_firmware():
     config = get_config_for_build()
     repo = SetupRepository(config)

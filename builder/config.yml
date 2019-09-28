@@ -16,6 +16,7 @@ firmware:
     repository:
         git_url: "https://github.com/freifunk-berlin/firmware.git"
         branch: "daily/upstream-master"
+        depth: 1
 
 results:
     # this is the path where the results of the build occur
@@ -24,14 +25,36 @@ results:
     # it allows serving the packages and downloading
     target: "./firmwares"
 
-# the format of the build id
-build_id_format: "%Y-%m-%d_%H-%M-%S"
+# files to modify
+files: []
+# directories in which files can be placed
+allowed_directories:
+- "/packages/"
+- "/configs/"
+- "/profiles/"
 
+# the email to send a notification to
+email: null
 
+# the build defaults
+# see https://github.com/freifunk-berlin/firmware/blob/master/config.mk
+build:
+    # the build target
+    target: ar71xx-generic
+    # list of packages to use
+    # see config.mk
+    package_list:
+    - default
+    # the format of the build id
+    id_format: "%Y-%m-%d_%H-%M-%S"
+    # something you do not need to configure
+    # it is used internally
+    id: "0000-00-00_00-00-00"
+    status: "unkonwn"
+    # file to save config to in build directory
+    result: config.json
 
-# something you do not need to configure
-# it is used internally
-build_id: "0000-00-00_00-00-00"
-build_status: "unkonwn"
+# this is set by the request's host header
 host: "localhost:5000"
+
 

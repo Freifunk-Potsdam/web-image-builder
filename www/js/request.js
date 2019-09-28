@@ -35,7 +35,7 @@ function trackRequest(url, onSuccess, onFailure, cache) {
 /*
  * General function to request JSON.
  */
-function sendRequest(url, onSuccess, onError){
+function sendRequest(url, onSuccess, onError, method, data){
   // see https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_forms_through_JavaScript
   var XHR = new XMLHttpRequest();
   if (!onError) {
@@ -66,7 +66,10 @@ function sendRequest(url, onSuccess, onError){
   });
 
   // Set up our request
-  XHR.open('GET', url, true);
-  XHR.send(null);
+  XHR.open(method || 'GET', url, true);
+  // set header
+  // see https://stackoverflow.com/a/24468752
+  XHR.setRequestHeader("Content-Type", "application/json");
+  XHR.send(data == undefined ? null : data);
 }
 
