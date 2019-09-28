@@ -3,6 +3,10 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  text-align: center;
+}
+
 .field {
   background-color: white;
   border-top-width: 0.5em;
@@ -53,4 +57,23 @@ body {
 
 .hidden, #configFailure.hidden {
   display: none;
+}
+
+.centered-content {
+  max-width: 40em;
+  margin: 0 auto;
+  padding: 1em;
+  background-color: white;
+  border-radius: 1em;
+}
+
+.section {
+  border-top-width: 0.3em;
+  border-top-color: #555;
+  border-top-style: solid;
+  padding-bottom: 1em;
+}
+
+.section.top {
+  border-top-width: 0.0em;
 }

@@ -18,8 +18,8 @@
     <script type="text/javascript" src="js/compatibility.js"></script>
   </head>
   <body>
-    <div class="field-listing grid-whole equalize">
-      <div class="field s-grid-whole m-grid-whole l-grid-whole padded">
+    <div class="centered-content">
+      <div class="section top">
         <h1>Freifunk-Berlin Firmware Erstellen</h1>
         <p class="description">
           Diese Seite erstellt die Berliner Freifunk-Firmware, die man
@@ -31,7 +31,7 @@
           Version erstellen.
         </p>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Entwickler</h2>
         <p class="description">
           Die offizielle Firmware der Berliner ist die Quelle, die voreingestellt ist.
@@ -42,7 +42,7 @@
         </select>
         <input type="text" id="repositoryInput" class="wide" onchange="repositorySelectionChanged()"/>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Firmware-Version</h2>
         <p class="description">
           Die Firmware hat verschiedene Versionen. Wähle eine:
@@ -52,10 +52,12 @@
         </select>
         <input type="text" id="branchInput" class="wide" onchange="branchSelectionChanged()"/>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Router</h2>
         <p class="description">
-          OpenWRT unterstützt viele Router. Versuche hier Deinen Router zu finden.
+          OpenWRT unterstützt viele Router. Versuche hier Deinen Router zu finden oder
+          <a href="https://openwrt.org/" target="_blank">durchsuche das Wiki,
+          wenn Du den Router hier nicht findest.</a>
         </p>
         <select id="brandSelection" onchange="brandSelectionChanged()" class="wide"></select>
         <select id="modelSelection" onchange="modelSelectionChanged()" class="wide"></select>
@@ -65,11 +67,8 @@
           <span id="modelinfo"></span>
         </p>
         Profil: <input type="text" id="modelProfile" />
-        <p>
-          <a href="https://openwrt.org/" target="_blank">Durchsuche das Wiki, wenn Du den Router hier nicht findest.</a>
-        </p>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <a href="https://openwrt.org/docs/techref/instructionset/" target="_blank"><h2>Ziel-Architektur</h2></a>
         <p class="description">
           Der Prozessor auf den Router hat eine bestimmte Architektur, auf die das
@@ -81,7 +80,7 @@
         <input type="text" id="modelTarget" class="wide" onkeyup="modelTargetChanged()" />
         <input type="text" id="modelSubtarget" class="wide" onkeyup="modelTargetChanged()" />
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Image-Typ</h2>
         <p class="description">
           Wähle einen <a href="https://wiki.freifunk.net/Berlin:Firmware#Image-Typen" target="_blank">
@@ -91,7 +90,7 @@
         </p>
         <select id="packageFile" onchange="packageFileChanged()" class="wide"></select>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Pakete zum Installieren</h2>
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start" target="_blank">Pakete</a>
@@ -107,7 +106,7 @@
           </ul>
         </p>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Pakete zum Kompilieren</h2>
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start" target="_blank">Pakete</a>
@@ -123,7 +122,7 @@
         <ul class="packagePreview" id="packagePreviewM">
         </ul>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Config-Datei</h2>
         <p class="description">
           <span id="configSuccess">
@@ -139,23 +138,24 @@
         </p>
         <textarea id="configFile" class="wide"></textarea>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+      <div class="section">
         <h2>Benachrichtigung</h2>
         <p class="description">
           Wenn Du eine E-Mail bekommen magst, wenn die Firmware erstellt wurde,
           dann trage sie hier ein:
         </p>
-        <input type="text" id="contactInput" class="wide"/>
+        <input type="text" id="contactInput" class="wide" placeholder="E-Mail"/>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
-        <h2>Server:</h2>
+      <div class="section">
+        <h2>Server</h2>
         <p class="description">
-          Wähle einen Build-Server oder trage die URL unten ein.
+          Dieser Server erstellt die Firmware.
+          Wähle einen Server aus oder gib eine URL ein.
         </p>
         <select id="serverSelection" class="wide"></select>
         <input type="text" id="serverUrl" onchange="serverUrlChanged()" class="wide"/>
       </div>
-      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner centered">
+      <div class="centered">
         <input type="button" onclick="startBuild()" value="Firmware Erstellen">
       </div>
     </div>
