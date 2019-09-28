@@ -19,3 +19,8 @@
 - https://github.com/niccokunzmann/firmware/blob/master/profiles/ar71xx.profiles
   - :4MB als anhang?
 - cpe-210 hat verschiedene Profile. Welche sollte man nehmen?
+- + button to add packages
+- builds endpoint
+- rate limiting https://flask-limiter.readthedocs.io/en/stable/
+  -  flask_limiter.util.get_ipaddr()
+- filter old builds

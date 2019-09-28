@@ -8,7 +8,7 @@ function getBuildConfig() {
     "git-url"   : repositoryInput.value,
     "branch"    : branchInput.value,
     "target"    : modelTarget.value + "-" + modelSubtarget.value,
-    "email"     : emailInput.value,
+    "email"     : contactInput.value,
     "packages"  : getPackageFileName(),
     "files" : [
       {

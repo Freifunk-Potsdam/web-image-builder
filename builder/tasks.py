@@ -149,7 +149,7 @@ class SaveBuildResults(Task):
         self.target = self.config.results.target
         self.config.results.target = new_target = os.path.join(
             self.config.results.target, self.config.build.id)
-        os.makedirs(new_target)
+        os.makedirs(new_target, exist_ok=True)
         os.makedirs(self.config.results.source, exist_ok=True)
         self.execute(["cp", "-rT", self.config.results.source, self.config.results.target])
         result = os.path.join(new_target, self.config.build.result);

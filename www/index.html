@@ -82,13 +82,21 @@
         <input type="text" id="modelSubtarget" class="wide" onkeyup="modelTargetChanged()" />
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
+        <h2>Image-Typ</h2>
+        <p class="description">
+          Wähle einen <a href="https://wiki.freifunk.net/Berlin:Firmware#Image-Typen" target="_blank">
+          Image-Typen</a>.
+          Dieser bestimmt, welche Pakete und Funktionen im Image vorinstalliert
+          sind.
+        </p>
+        <select id="packageFile" onchange="packageFileChanged()" class="wide"></select>
+      </div>
+      <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Pakete zum Installieren</h2>
         <p class="description">
           Diese <a href="https://openwrt.org/packages/table/start" target="_blank">Pakete</a>
-          werden in die Firmware eingebaut.
-          Wähle eine Voreinstellung, zu der deine Pakete hinzugefügt werden.
+          werden zusätzlich in die Firmware eingebaut.
         </p>
-        <select id="packageFile" onchange="packageFileChanged()" class="wide"></select>
         <p>
           <input type="text" id="packagesYInput" placeholder="Paketname"
             onkeyup="updatePackagesList(packagesYInput, packagesY, packagePreviewY)"
@@ -134,10 +142,10 @@
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Benachrichtigung</h2>
         <p class="description">
-          Wenn Du eine E-Mail bekommen magst, wenn der Build vorbei ist,
+          Wenn Du eine E-Mail bekommen magst, wenn die Firmware erstellt wurde,
           dann trage sie hier ein:
         </p>
-        <input type="text" id="emailInput" class="wide"/>
+        <input type="text" id="contactInput" class="wide"/>
       </div>
       <div class="field s-grid-whole m-grid-whole l-grid-half padded-inner">
         <h2>Server:</h2>
